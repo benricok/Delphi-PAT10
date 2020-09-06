@@ -1,14 +1,14 @@
-program PAT10_p;
+program PAT10_P;
 
 uses
   Vcl.Forms,
-  PAT10 in 'PAT10.pas' {Form1};
+  PAT10 in 'PAT10.pas' {frmMain};
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.
