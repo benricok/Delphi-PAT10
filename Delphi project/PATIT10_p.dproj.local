@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2020/10/01 09:23:38.000.416,=C:\Users\Microsoft_is_stront\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2020/10/01 09:25:11.000.849,=C:\Users\Microsoft_is_stront\Documents\Embarcadero\Studio\Projects\TABPGDLG.pas</Transaction>
+    <Transaction>2020/10/01 10:33:10.000.545,C:\Users\Microsoft_is_stront\Documents\Embarcadero\Studio\Projects\TABPGDLG.dfm=C:\Users\Microsoft_is_stront\Documents\GitHub\Delphi-PAT10\Delphi project\PATIT_10.dfm</Transaction>
+    <Transaction>2020/10/01 10:33:10.000.545,C:\Users\Microsoft_is_stront\Documents\Embarcadero\Studio\Projects\TABPGDLG.pas=C:\Users\Microsoft_is_stront\Documents\GitHub\Delphi-PAT10\Delphi project\PATIT_10.pas</Transaction>
+    <Transaction>2020/10/01 10:33:19.000.373,C:\Users\Microsoft_is_stront\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Microsoft_is_stront\Documents\GitHub\Delphi-PAT10\Delphi project\PATIT10_p.dproj</Transaction>
+    <Transaction>2020/10/01 13:16:22.709,=C:\Users\Microsoft_is_stront\Documents\GitHub\Delphi-PAT10\Delphi project\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
