@@ -1,0 +1,34 @@
+unit HELP;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent,
+  Vcl.Menus;
+
+type
+  TfrmHelp = class(TForm)
+    pnlToolBar: TPanel;
+    pnlHelp: TPanel;
+    memHelp: TMemo;
+    lblHelpHeading: TLabel;
+    btnOK: TBitBtn;
+    procedure btnOKClick(Sender: TObject);
+  end;
+
+var
+  frmHelp: TfrmHelp;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmHelp.btnOKClick(Sender: TObject);
+begin
+  frmEndecrypt.Show;
+  frmHelp.Hide;
+end;
+
+end.

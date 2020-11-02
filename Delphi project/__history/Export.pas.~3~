@@ -1,0 +1,32 @@
+unit Export;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.ExtCtrls,
+  Vcl.Samples.Spin, Vcl.CheckLst, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TfrmExport = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    pnlToolBar: TPanel;
+    pnlExport: TPanel;
+    lblExportHeading: TLabel;
+    btnCopy: TButton;
+    Button4: TButton;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmExport: TfrmExport;
+
+implementation
+
+{$R *.dfm}
+
+end.

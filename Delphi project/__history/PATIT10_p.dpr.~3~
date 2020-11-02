@@ -1,0 +1,16 @@
+program PATIT10_p;
+
+uses
+  Vcl.Forms,
+  PATIT_10 in 'PATIT_10.pas' {frmEndecrypt},
+  HELP in 'HELP.pas' {frmHelp};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TfrmEndecrypt, frmEndecrypt);
+  Application.CreateForm(TfrmHelp, frmHelp);
+  Application.Run;
+end.

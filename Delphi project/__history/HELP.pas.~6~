@@ -1,0 +1,33 @@
+unit HELP;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  System.Net.URLClient, System.Net.HttpClient, System.Net.HttpClientComponent,
+  Vcl.Menus;
+
+type
+  TfrmHelp = class(TForm)
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    pnlHelp: TPanel;
+    memHelp: TMemo;
+    Label1: TLabel;
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmHelp: TfrmHelp;
+
+implementation
+
+{$R *.dfm}
+
+
+end.
