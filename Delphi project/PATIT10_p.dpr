@@ -6,7 +6,8 @@ uses
   HELP in 'HELP.pas' {frmHelp},
   ABOUT in 'ABOUT.pas' {frmAbout},
   Import in 'Import.pas' {frmImport},
-  Export in 'Export.pas' {frmExport};
+  Export in 'Export.pas' {frmExport},
+  Algorithms in 'Algorithms.pas';
 
 {$R *.res}
 

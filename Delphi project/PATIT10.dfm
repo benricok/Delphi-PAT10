@@ -32,6 +32,10 @@ object frmEndecrypt: TfrmEndecrypt
       TabOrder = 0
       object tabMessage: TTabSheet
         Caption = 'Message'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblMessageHead: TLabel
           Left = 197
           Top = 3
@@ -112,6 +116,10 @@ object frmEndecrypt: TfrmEndecrypt
       end
       object tabKey: TTabSheet
         Caption = 'Key'
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 0
         object lblKeyHEad: TLabel
           Left = 128
           Top = 39

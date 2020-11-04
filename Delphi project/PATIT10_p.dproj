@@ -118,6 +118,7 @@
             <Form>frmExport</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Algorithms.pas"/>
         <None Include="config.xml"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -142,12 +143,6 @@
             </Delphi.Personality>
             <Deployment Version="3">
                 <DeployFile LocalName="config.xml" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="PAT10.config" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>

@@ -1,0 +1,125 @@
+unit Algorithms;
+
+interface
+  uses
+    Windows, System.Classes, SysUtils, Math, Vcl.Dialogs;
+
+  // Functions
+  function  GenerateKey(iMin, iMax : integer; bUpChar, bLowChar, bNumbers, bSpecial : boolean) : String;
+  function  Encrypt(sMessage, sKey : string) : string;
+  function  Decrypt(sMessage, sKey : string) : string;
+  function base64_encode(sIn : String) : String;
+  function base64_decode(sIn : String) : String;
+  function encrypt_vigenere(sIn : String) : String;
+  function decrypt_vigenere(sIn : String) : String;
+  function extend_key(sIn : String) : String;
+
+implementation
+
+//Generate a random selection of characters determind by the user's selection on lenth and what characters may be used
+function GenerateKey(iMin, iMax : integer; bUpChar, bLowChar, bNumbers, bSpecial : boolean) : String;
+Var
+  iLengthKey, iLengthGenAvalible, i : integer;
+  sGenKey, sGenAvalible : String;
+
+Const
+  sGenUpChar = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  sGenLowChar = 'abcdefghijklmnopqrstuvwxyz';
+  sGenNumbers = '0123456789';
+  sGenSpecialChar = '!@#$%^&*';
+
+begin
+  //Check if Min value is smaller than Max value
+  if iMin >= iMax then
+    MessageDlg('Please enter the minimum and maximum values in correctly',mtError, mbOKCancel, 0)
+  else
+    begin
+      //Initilize for loop counter
+      i := 1;
+
+      //Radomise length of key
+      Randomize;
+      iLengthKey := RandomRange(iMin, iMax +1);
+
+      //Append Selected characters to string avalible to the randomizer to select from and get length of it
+      if bUpChar then
+        sGenAvalible:= sGenAvalible + sGenUpChar;
+      if bLowChar then
+        sGenAvalible:= sGenAvalible + sGenLowChar;
+      if bNumbers then
+        sGenAvalible:= sGenAvalible + sGenNumbers;
+      if bSpecial then
+        sGenAvalible:= sGenAvalible + sGenSpecialChar;
+
+      iLengthGenAvalible := length(sGenAvalible);
+
+      //Check if user selected characters
+      if iLengthGenAvalible = 0 then
+        MessageDlg('Please select characters for the gererator to use',mtError, mbOKCancel, 0);
+
+      //Generate Key
+      for i := 1 to iLengthKey do
+        begin
+          sGenKey := sGenKey + sGenAvalible[Randomrange(1, iLengthGenAvalible+1)];
+        end;
+
+      //Return Key
+      result := sGenKey;
+    end;
+end;
+
+function Encrypt(sMessage, sKey : string) : string;
+Var
+  sB64, sVigenereMsg : String;
+begin
+  sB64 := EncodeBase64(sMessage);
+  sVigenereMsg := encrypt_Vigenere(sB64, sKey);
+  result := sVigenereMsg;
+end;
+
+function Decrypt(sEncryptedMsg, sKey : string) : string;
+Var
+  sNewKey, sB64_encoded, sB64_decoded : String;
+begin
+  newKey := extend_key(sEncryptedMsg, key);
+  sB64_encoded := decrypt_vigenere(sEncryptedMsg, sNewKey);
+  sB64_decoded := base64_decode(sB64_encoded);
+  result := sB64_decoded;
+end;
+
+function base64_encode(sIn : String) : String;
+Var
+  sOut : String;
+begin
+
+end;
+
+function base64_decode(sIn : String) : String;
+Var
+  sOut : String
+begin
+
+end;
+
+function decrypt_vigenere( : String) : String;
+Var
+
+begin
+
+end;
+
+function encrypt_vigenere( : String) : String;
+Var
+
+begin
+
+end;
+
+function extend_key( : String) : String;
+Var
+
+begin
+
+end;
+
+end.
