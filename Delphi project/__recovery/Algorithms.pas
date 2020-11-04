@@ -185,8 +185,12 @@ end;
 
 // https://github.com/philipperemy/easy-encryption/blob/master/vigenere.h
 function decrypt_vigenere(sB64, sKey : String) : String;
-
+Var
+  i, j : integer;
+  sEncryptedMs : String;
 begin
+  i := 0;
+  j := 0;
 
 end;
 
@@ -212,6 +216,7 @@ begin
         j := 0;
 
       sNewKey[i] := sKey[j];
+      Inc(j);
     end;
   sNewKey[i] := #0;
   result := sNewKey;

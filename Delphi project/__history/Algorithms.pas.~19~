@@ -213,7 +213,7 @@ begin
 
       sNewKey[i] := sKey[j];
     end;
-  sNewKey[i] := #0;
+  sNewKey[i] = '\0';
   result := sNewKey;
 end;
 

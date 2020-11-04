@@ -8,14 +8,12 @@ interface
   function  GenerateKey(iMin, iMax : integer; bUpChar, bLowChar, bNumbers, bSpecial : boolean) : String;
   function  Encrypt(sMessage, sKey : string) : string;
   function  Decrypt(sEncryptedMsg, sKey : string) : string;
-  //function base64_encode(sIn : String) : String;
-  //function base64_decode(sIn : String) : String;
-  function encrypt_vigenere(sB64, sKey : String) : String;
-  function decrypt_vigenere(sB64, Skey : String) : String;
-  function extend_key(sMsg, sKey : String) : String;
+  function base64_encode(sIn : String) : String;
+  function base64_decode(sIn : String) : String;
+  function encrypt_vigenere(sIn : String) : String;
+  function decrypt_vigenere(sIn : String) : String;
+  function extend_key(sIn : String) : String;
 
-{
-  // Base64 algorithm lookup table
   const
     base64_table : array [0..63] of char = (
         'A','B','C','D','E','F','G','H',
@@ -27,39 +25,6 @@ interface
         'w','x','y','z','0','1','2','3',
         '4','5','6','7','8','9','+','/'
     );
-
-    T: array [0..255] of integer = (
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, 62, -1,
-    -1, -1, 63, 52, 53, 54, 55, 56, 57,
-    58, 59, 60, 61, -1, -1, -1, -1, -1,
-    -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8,
-    9, 10, 11, 12, 13, 14, 15, 16, 17,
-    18, 19, 20, 21, 22, 23, 24, 25, -1,
-    -1, -1, -1, -1, -1, 26, 27, 28, 29,
-    30, 31, 32, 33, 34, 35, 36, 37, 38,
-    39, 40, 41, 42, 43, 44, 45, 46, 47,
-    48, 49, 50, 51, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1, -1, -1, -1, -1, -1, -1, -1,
-    -1, -1);
-}
-
 implementation
 
 //Generate a random selection of characters determind by the user's selection on lenth and what characters may be used
@@ -119,22 +84,21 @@ function Encrypt(sMessage, sKey : string) : string;
 Var
   sB64, sVigenereMsg : String;
 begin
-  //sB64 := base64_encode(sMessage);
-  sVigenereMsg := encrypt_Vigenere({sB64} sMessage, sKey);
+  sB64 := base64_encode(sMessage);
+  sVigenereMsg := encrypt_Vigenere(sB64, sKey);
   result := sVigenereMsg;
 end;
 
 function Decrypt(sEncryptedMsg, sKey : string) : string;
 Var
-  sNewKey, sOut{, sB64_encoded, sB64_decoded} : String;
+  sNewKey, sB64_encoded, sB64_decoded : String;
 begin
   sNewKey := extend_key(sEncryptedMsg, sKey);
-  {sB64_encoded} sOut  := decrypt_vigenere(sEncryptedMsg, sNewKey);
-  // sB64_decoded := base64_decode(sB64_encoded);
-  result := sOut; {sB64_decoded}
+  sB64_encoded := decrypt_vigenere(sEncryptedMsg, sNewKey);
+  sB64_decoded := base64_decode(sB64_encoded);
+  result := sB64_decoded;
 end;
 
-{
 // https://github.com/philipperemy/easy-encryption/blob/master/b64.h
 function base64_encode(sIn : String) : String;
 Var
@@ -161,7 +125,6 @@ begin
             iValB := iValb - 6;
             end;
         end;
-
     if iValB > -6 then
           begin
             sOut := sOut + base64_table[((iVal shl 8) shr (iValB + 8)) and $3F]
@@ -181,7 +144,6 @@ Var
 begin
 
 end;
-}
 
 // https://github.com/philipperemy/easy-encryption/blob/master/vigenere.h
 function decrypt_vigenere(sB64, sKey : String) : String;
@@ -197,24 +159,10 @@ begin
 
 end;
 
-//Generate new key
-function extend_key(sMsg, sKey : String) : String;
-Var
-  i, j : integer;
-  sNewKey : String;
+function extend_key( : String) : String;
+
 begin
-  i := 0;
-  j := 0;
 
-  for i := i to sMsg.length do
-    begin
-      if j = sKey.Length then
-        j := 0;
-
-      sNewKey[i] := sKey[j];
-    end;
-  sNewKey[i] := #0;
-  result := sNewKey;
 end;
 
 // https://github.com/philipperemy/easy-encryption
