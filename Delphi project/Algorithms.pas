@@ -10,8 +10,8 @@ interface
   function  Decrypt(sEncryptedMsg, sKey : string) : string;
   //function base64_encode(sIn : String) : String;
   //function base64_decode(sIn : String) : String;
-  function encrypt_vigenere(sB64, sKey : String) : String;
-  function decrypt_vigenere(sB64, Skey : String) : String;
+  function encrypt_vigenere(sMsg, sKey : String) : String;
+  function decrypt_vigenere(sMsg, Skey : String) : String;
   function extend_key(sMsg, sKey : String) : String;
 
 {
@@ -184,13 +184,25 @@ end;
 }
 
 // https://github.com/philipperemy/easy-encryption/blob/master/vigenere.h
-function decrypt_vigenere(sB64, sKey : String) : String;
+function decrypt_vigenere(sMsg, sKey : String) : String;
+Var
+  i, j : integer;
+  sEncryptedMsg, sNewKey : String;
 
 begin
+  i := 0;
+  j := 0;
 
+  sNewKey := extend_key(sMsg, sKey);
+
+  for i := i to sMsg.length do
+    begin
+      if (al) then
+
+    end;
 end;
 
-function encrypt_vigenere(sB64, sKey : String) : String;
+function encrypt_vigenere(sMsg, sKey : String) : String;
 
 
 begin
@@ -202,6 +214,7 @@ function extend_key(sMsg, sKey : String) : String;
 Var
   i, j : integer;
   sNewKey : String;
+
 begin
   i := 0;
   j := 0;
@@ -212,6 +225,7 @@ begin
         j := 0;
 
       sNewKey[i] := sKey[j];
+      Inc(j);
     end;
   sNewKey[i] := #0;
   result := sNewKey;
