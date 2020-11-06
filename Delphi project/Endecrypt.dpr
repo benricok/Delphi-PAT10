@@ -1,4 +1,4 @@
-program PATIT10_p;
+program Endecrypt;
 
 uses
   Vcl.Forms,

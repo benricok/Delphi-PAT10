@@ -23,6 +23,7 @@ object frmHelp: TfrmHelp
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 499
     object btnOK: TBitBtn
       Left = 425
       Top = 8
@@ -61,7 +62,7 @@ object frmHelp: TfrmHelp
       Lines.Strings = (
         '# Delphi PAT grade 10'
         '1. By Benrico Krog'
-        '2. Uses the vigenere algorithm for encryption and decryption'
+        '2. Writen in Delphi'
         '3. Topic: Encryption and Decryption.'
         ''
         '## How to use the tool'
