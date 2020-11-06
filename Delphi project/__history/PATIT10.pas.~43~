@@ -1,0 +1,113 @@
+unit PATIT10;
+
+interface
+
+uses Winapi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
+  Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, Vcl.ExtCtrls,
+  Vcl.Samples.Spin, Vcl.CheckLst, Math, Vcl.Dialogs, System.Net.URLClient,
+  System.Net.HttpClient, System.Net.HttpClientComponent, ABOUT, HELP, Import,
+  Export, Algorithms;
+
+type
+  //Main form class
+  TfrmEndecrypt = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    PageControl1: TPageControl;
+    tabMessage: TTabSheet;
+    tabKey: TTabSheet;
+    bitClose: TBitBtn;
+    bitHelp: TBitBtn;
+    pnlInput: TPanel;
+    pnlOutput: TPanel;
+    lblMessageHead: TLabel;
+    memIn: TMemo;
+    btnImport: TButton;
+    memOut: TMemo;
+    btnExport: TButton;
+    lblKeyHEad: TLabel;
+    edtKey: TEdit;
+    btnKeyGen: TButton;
+    clbKeyGenOptions: TCheckListBox;
+    sedtGenMin: TSpinEdit;
+    sedtGenMax: TSpinEdit;
+    lblGenMin: TLabel;
+    lblGenMax: TLabel;
+    pnlGenerator: TPanel;
+    lblGenChar: TLabel;
+    btnEncrypt: TButton;
+    btnDecrypt: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure btnKeyGenClick(Sender: TObject);
+    procedure bitHelpClick(Sender: TObject);
+    procedure btnDecryptClick(Sender: TObject);
+    procedure btnEncryptClick(Sender: TObject);
+  end;
+
+var
+  frmEndecrypt: TfrmEndecrypt;
+  sKey : String;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmEndecrypt.btnEncryptClick(Sender: TObject);
+Var
+  sEncryptedMsg : String;
+
+begin
+  if memIn.Text = '' then
+    MessageDlg('Error, please enter text into the input box', mtError, mbOKCancel, 0)
+  else
+    begin
+      sEncryptedMsg := Encrypt(memIn.Text, sKey);
+      memOut.Text := sEncryptedMsg;
+      MessageDlg('Your new decrypt key is: ' + Algorithms.sNewKey, mtInformation, mbOKCancel, 0);
+    end;
+end;
+
+procedure TfrmEndecrypt.btnDecryptClick(Sender: TObject);
+Var
+  sDecryptedMsg : String;
+
+begin
+  if memIn.Text = '' then
+    MessageDlg('Error, please enter text into the input box', mtError, mbOKCancel, 0)
+  else
+    begin
+      sDecryptedMsg := Decrypt(memIn.Text, sKey);
+      memOut.Lines.Clear;
+      memOut.Text := sDecryptedMsg;
+    end;
+end;
+
+procedure TfrmEndecrypt.bitHelpClick(Sender: TObject);
+begin
+  frmEndecrypt.Hide;
+  frmHelp.Show;
+end;
+
+procedure TfrmEndecrypt.btnKeyGenClick(Sender: TObject);
+begin
+  //Generate a new key
+  sKey := GenerateKey(sedtGenMin.Value, sedtGenMax.Value, clbKeyGenOptions.Checked[0], clbKeyGenOptions.Checked[1], clbKeyGenOptions.Checked[2], clbKeyGenOptions.Checked[3]);
+  edtKey.Text := sKey;
+end;
+
+procedure TfrmEndecrypt.FormCreate(Sender: TObject);
+begin
+  clbKeyGenOptions.Checked[0] := true;
+  clbKeyGenOptions.Checked[1] := true;
+  clbKeyGenOptions.Checked[2] := true;
+  clbKeyGenOptions.Checked[3] := true;
+
+  //Generate a new key
+  sKey := GenerateKey(sedtGenMin.Value, sedtGenMax.Value, clbKeyGenOptions.Checked[0], clbKeyGenOptions.Checked[1], clbKeyGenOptions.Checked[2], clbKeyGenOptions.Checked[3]);
+  edtKey.Text := sKey;
+  memIn.Clear;
+  memOut.Clear;
+end;
+
+end.
+

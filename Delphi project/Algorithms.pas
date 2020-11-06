@@ -6,17 +6,22 @@ interface
 
   // Functions
   function  GenerateKey(iMin, iMax : integer; bUpChar, bLowChar, bNumbers, bSpecial : boolean) : String;
-  function  Encrypt(sMessage, sKey : string) : string;
-  function  Decrypt(sEncryptedMsg, sKey : string) : string;
-  //function base64_encode(sIn : String) : String;
-  //function base64_decode(sIn : String) : String;
-  function encrypt_vigenere(sMsg, sKey : String) : String;
-  function decrypt_vigenere(sMsg, Skey : String) : String;
-  function extend_key(sMsg, sKey : String) : String;
+  function  Encrypt(sMessage, sKeyIn : string) : string;
+  function  Decrypt(sEncryptedMsg, sKeyIn : string) : string;
+  function base64_encode(sIn : String) : String;
+  function base64_decode(sIn : String) : String;
+  function encrypt_vigenere(sMsg, sKeyIn : String) : String;
+  function decrypt_vigenere(sEncryptedMsg, sNewKey : String) : String;
+  function extend_key(sMsg, sKeyIn : String) : String;
 
-{
-  // Base64 algorithm lookup table
+  Var
+    sNewKey : String;
+
   const
+    // Characters for vigenere algorithm
+    sAvalibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
+
+    // Base64 algorithm lookup table
     base64_table : array [0..63] of char = (
         'A','B','C','D','E','F','G','H',
         'I','J','K','L','M','N','O','P',
@@ -28,6 +33,7 @@ interface
         '4','5','6','7','8','9','+','/'
     );
 
+    // Base64 acii lookup table
     T: array [0..255] of integer = (
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -58,7 +64,7 @@ interface
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1);
-}
+
 
 implementation
 
@@ -115,26 +121,103 @@ begin
 end;
 
 // https://github.com/philipperemy/easy-encryption/blob/master/encrypt.h
-function Encrypt(sMessage, sKey : string) : string;
+function Encrypt(sMessage, sKeyIn : string) : string;
 Var
-  sB64, sVigenereMsg : String;
+  {sB64,} sVigenereMsg : String;
 begin
   //sB64 := base64_encode(sMessage);
-  sVigenereMsg := encrypt_Vigenere({sB64} sMessage, sKey);
+  sVigenereMsg := encrypt_Vigenere({sB64} sMessage, sKeyIn);
   result := sVigenereMsg;
 end;
 
-function Decrypt(sEncryptedMsg, sKey : string) : string;
+function Decrypt(sEncryptedMsg, sKeyIn : string) : string;
 Var
-  sNewKey, sOut{, sB64_encoded, sB64_decoded} : String;
+  sOut{, sB64_encoded, sB64_decoded} : String;
 begin
-  sNewKey := extend_key(sEncryptedMsg, sKey);
+  sNewKey := extend_key(sEncryptedMsg, sKeyIn);
   {sB64_encoded} sOut  := decrypt_vigenere(sEncryptedMsg, sNewKey);
   // sB64_decoded := base64_decode(sB64_encoded);
   result := sOut; {sB64_decoded}
 end;
 
-{
+// https://github.com/philipperemy/easy-encryption/blob/master/vigenere.h
+function encrypt_vigenere(sMsg, sKeyIn : String) : String;
+Var
+  i, k : integer;
+  sEncryptedMsg : String;
+
+begin
+  i := 1;
+  k := 1;
+
+  sNewKey := extend_key(sMsg, sKeyIn);
+
+  sEncryptedMsg := '';
+  for k := 1 to sMsg.length do
+    sEncryptedMsg := sEncryptedMsg + 'x';
+
+  for i := 1 to sMsg.length do
+    begin
+      if (upCase(sMsg[i]) IN ['A'..'Z', '0'..'9']) then
+        sEncryptedMsg[i] := sAvalibleChars[((Pos(sMsg[i], sAvalibleChars) + Pos(sNewKey[i], sAvalibleChars)) MOD sAvalibleChars.Length)]
+      else
+        sEncryptedMsg[i] := sMsg[i];
+    end;
+  result := sEncryptedMsg;
+end;
+
+function decrypt_vigenere(sEncryptedMsg, sNewKey : String) : String;
+Var
+  i, k : integer;
+  sDecryptedMsg : String;
+
+begin
+  i := 1;
+  k := 1;
+
+  sDecryptedMsg := '';
+  for k := 1 to sEncryptedMsg.length do
+    sDecryptedMsg := sDecryptedMsg + 'x';
+
+  for i := 1 to sEncryptedMsg.length do
+    begin
+      if (upCase(sEncryptedMsg[i]) IN ['A'..'Z', '0'..'9']) then
+        sDecryptedMsg[i] := sAvalibleChars[(((Pos(sEncryptedMsg[i], sAvalibleChars) - Pos(sNewKey[i], sAvalibleChars)) + sAvalibleChars.Length) MOD sAvalibleChars.Length)]
+      else
+        sDecryptedMsg[i] := sEncryptedMsg[i];
+    end;
+  result := sDecryptedMsg;
+end;
+
+//Generate new private key
+function extend_key(sMsg, sKeyIn : String) : String;
+Var
+  i, j, k : integer;
+  sNewKeyGen : String;
+
+begin
+  i := 1;
+  j := 1;
+  k := 1;
+
+  sNewKeyGen := '';
+  for k := 1 to sMsg.length do
+    sNewKeyGen := sNewKeyGen + 'x';
+
+  for i := 1 to sMsg.length do
+    begin
+      if j = sKeyIn.Length then
+         j := 1;
+
+      sNewKeyGen[i] := sKeyIn[j];
+      Inc(j);
+    end;
+  result := sNewKeyGen;
+end;
+
+// https://github.com/philipperemy/easy-encryption
+
+
 // https://github.com/philipperemy/easy-encryption/blob/master/b64.h
 function base64_encode(sIn : String) : String;
 Var
@@ -167,6 +250,7 @@ begin
             sOut := sOut + base64_table[((iVal shl 8) shr (iValB + 8)) and $3F]
         end;
 
+    // Apply padding
     while length(sOut) mod 4 > 0 do
         begin
             sOut := sOut + '=';
@@ -178,58 +262,29 @@ end;
 function base64_decode(sIn : String) : String;
 Var
   sOut : String;
-begin
-
-end;
-}
-
-// https://github.com/philipperemy/easy-encryption/blob/master/vigenere.h
-function decrypt_vigenere(sMsg, sKey : String) : String;
-Var
-  i, j : integer;
-  sEncryptedMsg, sNewKey : String;
+  iVal, iValB, jj : integer;
+  c : char;
 
 begin
-  i := 0;
-  j := 0;
-
-  sNewKey := extend_key(sMsg, sKey);
-
-  for i := i to sMsg.length do
+  sOut := '';
+  iVal := 0;
+  iValB := -8;
+  {
+  for jj := 0 to length(sIn) do
     begin
-      if (al) then
+      c := sIn[jj];
+      if c IN [] then
+        break;
+      iVal := (ival shl 6) + T[c];
+      iValB := iValB + 6;
+      if iValB >= 0 then
+        begin
+          sOut := sOut +  base64_table[char((iVal shr iValB) and $FF)];
+          iValB := iValB -8;
+        end;
 
     end;
+   }
 end;
 
-function encrypt_vigenere(sMsg, sKey : String) : String;
-
-
-begin
-
-end;
-
-//Generate new key
-function extend_key(sMsg, sKey : String) : String;
-Var
-  i, j : integer;
-  sNewKey : String;
-
-begin
-  i := 0;
-  j := 0;
-
-  for i := i to sMsg.length do
-    begin
-      if j = sKey.Length then
-        j := 0;
-
-      sNewKey[i] := sKey[j];
-      Inc(j);
-    end;
-  sNewKey[i] := #0;
-  result := sNewKey;
-end;
-
-// https://github.com/philipperemy/easy-encryption
 end.

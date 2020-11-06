@@ -5,8 +5,7 @@ interface
 uses Winapi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
   Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, Vcl.ExtCtrls,
   Vcl.Samples.Spin, Vcl.CheckLst, Math, Vcl.Dialogs, System.Net.URLClient,
-  System.Net.HttpClient, System.Net.HttpClientComponent, ABOUT, HELP, Import,
-  Export, Algorithms;
+  System.Net.HttpClient, System.Net.HttpClientComponent, HELP, Algorithms;
 
 type
   //Main form class
@@ -37,9 +36,16 @@ type
     lblGenChar: TLabel;
     btnEncrypt: TButton;
     btnDecrypt: TButton;
+    lblInput: TLabel;
+    lblOutput: TLabel;
+    lblHeadingsmall: TLabel;
+    lblHeadingSmall2: TLabel;
+    pnlSub: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure btnKeyGenClick(Sender: TObject);
     procedure bitHelpClick(Sender: TObject);
+    procedure btnDecryptClick(Sender: TObject);
+    procedure btnEncryptClick(Sender: TObject);
     procedure btnImportClick(Sender: TObject);
     procedure btnExportClick(Sender: TObject);
   end;
@@ -52,6 +58,81 @@ implementation
 
 {$R *.dfm}
 
+procedure TfrmEndecrypt.btnEncryptClick(Sender: TObject);
+Var
+  sEncryptedMsg : String;
+
+begin
+  if memIn.Text = '' then
+    MessageDlg('Error, please enter text into the input box', mtError, mbOKCancel, 0)
+  else
+    begin
+      sKey := edtKey.Text;
+      sEncryptedMsg := Encrypt(memIn.Text, sKey);
+      memOut.Text := sEncryptedMsg;
+      MessageDlg('Your new decrypt key is: ' + Algorithms.sNewKey, mtInformation, mbOKCancel, 0);
+    end;
+end;
+
+procedure TfrmEndecrypt.btnExportClick(Sender: TObject);
+Var
+  tFile : TextFile;
+  sFilePath : String;
+begin
+  if memOut.Text = '' then
+    MessageDlg('Error, no text to export', mtError, mbOKCancel, 0)
+  else
+    begin
+      sFilePath := InputBox('Export', 'Enter the file path with the filename you wish to edit and save the output in', 'encryptOut.txt');
+      AssignFile(tFile, sFilePath);
+
+      Try
+        Reset(tFile);
+      Except
+        MessageDlg('The path ' + sFilePath + ' does not exist', mtError, mbOKCancel, 0);
+      End;
+
+      Rewrite(tFile);
+
+      Write(tFile, memOut.Text);
+      CloseFile(tFile);
+  end;
+end;
+
+procedure TfrmEndecrypt.btnImportClick(Sender: TObject);
+Var
+  sFilePath : String;
+  tFile : TextFile;
+
+begin
+  memIn.Clear;
+  sFilePath := InputBox('Import', 'Enter the file path with the filename of the text file you wish to import', 'encryptIn.txt');
+  AssignFile(tFile, sFilePath);
+
+  Try
+    Reset(tFile);
+    memIn.Lines.LoadFromFile(sFilePath);
+  Except
+    MessageDlg('The path ' + sFilePath + ' does not exist', mtError, mbOKCancel, 0);
+  End;
+
+end;
+
+procedure TfrmEndecrypt.btnDecryptClick(Sender: TObject);
+Var
+  sDecryptedMsg : String;
+
+begin
+  if memIn.Text = '' then
+    MessageDlg('Error, please enter text into the input box', mtError, mbOKCancel, 0)
+  else
+    begin
+      sKey := edtKey.Text;
+      sDecryptedMsg := Decrypt(memIn.Text, sKey);
+      memOut.Lines.Clear;
+      memOut.Text := sDecryptedMsg;
+    end;
+end;
 
 procedure TfrmEndecrypt.bitHelpClick(Sender: TObject);
 begin
@@ -59,21 +140,7 @@ begin
   frmHelp.Show;
 end;
 
-procedure TfrmEndecrypt.btnExportClick(Sender: TObject);
-begin
-  frmExport.Show;
-  frmEndecrypt.Hide;
-end;
-
-procedure TfrmEndecrypt.btnImportClick(Sender: TObject);
-begin
-  frmImport.Show;
-  frmEndecrypt.Hide;
-end;
-
 procedure TfrmEndecrypt.btnKeyGenClick(Sender: TObject);
-Var
-  sKey : string;
 begin
   //Generate a new key
   sKey := GenerateKey(sedtGenMin.Value, sedtGenMax.Value, clbKeyGenOptions.Checked[0], clbKeyGenOptions.Checked[1], clbKeyGenOptions.Checked[2], clbKeyGenOptions.Checked[3]);
@@ -81,20 +148,17 @@ begin
 end;
 
 procedure TfrmEndecrypt.FormCreate(Sender: TObject);
-Var
-  i : integer;
-
 begin
-  frmAbout.Show;
-  i := 0;
-  for i := 0 to 3 do
-    begin
-      clbKeyGenOptions.Checked[i] := true;
-    end;
+  clbKeyGenOptions.Checked[0] := true;
+  clbKeyGenOptions.Checked[1] := true;
+  clbKeyGenOptions.Checked[2] := true;
+  clbKeyGenOptions.Checked[3] := true;
 
   //Generate a new key
   sKey := GenerateKey(sedtGenMin.Value, sedtGenMax.Value, clbKeyGenOptions.Checked[0], clbKeyGenOptions.Checked[1], clbKeyGenOptions.Checked[2], clbKeyGenOptions.Checked[3]);
   edtKey.Text := sKey;
+  memIn.Clear;
+  memOut.Clear;
 end;
 
 end.
