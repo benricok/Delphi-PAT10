@@ -3,7 +3,7 @@ object frmEndecrypt: TfrmEndecrypt
   Top = 108
   BorderStyle = bsSingle
   Caption = 'Endecrypt'
-  ClientHeight = 530
+  ClientHeight = 597
   ClientWidth = 584
   Color = clBtnFace
   ParentFont = True
@@ -16,44 +16,62 @@ object frmEndecrypt: TfrmEndecrypt
     Left = 0
     Top = 0
     Width = 584
-    Height = 496
+    Height = 563
     Align = alClient
     BevelOuter = bvNone
     BorderWidth = 5
     ParentColor = True
     TabOrder = 0
+    ExplicitHeight = 496
     object PageControl1: TPageControl
       Left = 5
       Top = 5
       Width = 574
-      Height = 486
-      ActivePage = tabMessage
+      Height = 553
+      ActivePage = tabKey
       Align = alClient
       TabOrder = 0
+      ExplicitHeight = 486
       object tabMessage: TTabSheet
         Caption = 'Message'
+        ExplicitLeft = 0
+        ExplicitTop = 27
+        ExplicitHeight = 545
         object lblMessageHead: TLabel
-          Left = 197
-          Top = 3
-          Width = 202
-          Height = 16
+          Left = 136
+          Top = 12
+          Width = 304
+          Height = 22
           Caption = 'Message Encryption and Decryption'
-          Font.Charset = DEFAULT_CHARSET
+          Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
+          Font.Height = -19
+          Font.Name = 'Arial'
           Font.Style = []
           ParentFont = False
         end
         object pnlInput: TPanel
-          Left = 11
-          Top = 25
+          Left = 10
+          Top = 40
           Width = 262
-          Height = 334
+          Height = 359
           TabOrder = 0
+          object lblInput: TLabel
+            Left = 8
+            Top = 10
+            Width = 28
+            Height = 16
+            Caption = 'Input'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+          end
           object memIn: TMemo
             Left = 8
-            Top = 8
+            Top = 32
             Width = 241
             Height = 282
             Lines.Strings = (
@@ -61,67 +79,116 @@ object frmEndecrypt: TfrmEndecrypt
             TabOrder = 0
           end
           object btnImport: TButton
-            Left = 8
-            Top = 296
-            Width = 75
+            Left = 64
+            Top = 328
+            Width = 121
             Height = 25
-            Caption = 'Import'
+            Caption = 'Import from file'
             TabOrder = 1
+            OnClick = btnImportClick
           end
         end
         object pnlOutput: TPanel
           Left = 291
-          Top = 25
+          Top = 40
           Width = 262
-          Height = 334
+          Height = 359
           TabOrder = 1
-          object btnExport: TButton
+          object lblOutput: TLabel
             Left = 8
-            Top = 296
-            Width = 75
-            Height = 25
-            Caption = 'Export'
-            TabOrder = 0
+            Top = 10
+            Width = 35
+            Height = 16
+            Caption = 'Ouput'
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
           end
           object memOut: TMemo
             Left = 8
-            Top = 8
+            Top = 32
             Width = 241
-            Height = 282
+            Height = 290
+            TabOrder = 0
+          end
+          object btnExport: TButton
+            Left = 64
+            Top = 328
+            Width = 121
+            Height = 25
+            Caption = 'Export to file'
             TabOrder = 1
+            OnClick = btnExportClick
           end
         end
-        object btnDecrypt: TButton
-          Left = 368
-          Top = 392
-          Width = 75
-          Height = 25
-          Caption = 'Decrypt'
+        object pnlSub: TPanel
+          Left = 18
+          Top = 421
+          Width = 241
+          Height = 92
           TabOrder = 2
-          OnClick = btnDecryptClick
-        end
-        object btnEncrypt: TButton
-          Left = 104
-          Top = 392
-          Width = 75
-          Height = 25
-          Caption = 'Encrypt'
-          TabOrder = 3
-          OnClick = btnEncryptClick
+          object lblHeadingSmall2: TLabel
+            Left = 10
+            Top = 23
+            Width = 93
+            Height = 16
+            Caption = 'in the input box:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+          end
+          object lblHeadingsmall: TLabel
+            Left = 10
+            Top = 9
+            Width = 195
+            Height = 16
+            Caption = 'Encrypt or Decrypt your message'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            ParentFont = False
+          end
+          object btnDecrypt: TButton
+            Left = 120
+            Top = 53
+            Width = 75
+            Height = 25
+            Caption = 'Decrypt'
+            TabOrder = 0
+            OnClick = btnDecryptClick
+          end
+          object btnEncrypt: TButton
+            Left = 34
+            Top = 53
+            Width = 75
+            Height = 25
+            Caption = 'Encrypt'
+            TabOrder = 1
+            OnClick = btnEncryptClick
+          end
         end
       end
       object tabKey: TTabSheet
         Caption = 'Key'
+        ExplicitHeight = 458
         object lblKeyHEad: TLabel
-          Left = 128
+          Left = 160
           Top = 39
-          Width = 206
-          Height = 16
-          Caption = 'Enter your own key or generate one'
+          Width = 233
+          Height = 22
+          Caption = 'Enter a key or generate one'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
+          Font.Height = -19
+          Font.Name = 'Arial'
           Font.Style = []
           ParentFont = False
         end
@@ -173,7 +240,7 @@ object frmEndecrypt: TfrmEndecrypt
           end
           object sedtGenMin: TSpinEdit
             Left = 34
-            Top = 64
+            Top = 62
             Width = 121
             Height = 22
             MaxValue = 64
@@ -187,7 +254,7 @@ object frmEndecrypt: TfrmEndecrypt
             Width = 121
             Height = 22
             MaxValue = 64
-            MinValue = 0
+            MinValue = 4
             TabOrder = 2
             Value = 24
           end
@@ -213,13 +280,14 @@ object frmEndecrypt: TfrmEndecrypt
   end
   object Panel2: TPanel
     Left = 0
-    Top = 496
+    Top = 563
     Width = 584
     Height = 34
     Align = alBottom
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
+    ExplicitTop = 496
     object bitClose: TBitBtn
       Left = 487
       Top = 1

@@ -217,6 +217,7 @@ begin
   for k := 1 to sMsg.length do
     sNewKeyGen := sNewKeyGen + 'x';
 
+  //loop through already genarated key and exstend/shorten it acording to the length of the message
   for i := 1 to sMsg.length do
     begin
       if j = sKeyIn.Length then

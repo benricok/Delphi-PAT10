@@ -22,21 +22,16 @@ object frmEndecrypt: TfrmEndecrypt
     BorderWidth = 5
     ParentColor = True
     TabOrder = 0
-    ExplicitHeight = 496
     object PageControl1: TPageControl
       Left = 5
       Top = 5
       Width = 574
       Height = 553
-      ActivePage = tabKey
+      ActivePage = tabMessage
       Align = alClient
       TabOrder = 0
-      ExplicitHeight = 486
       object tabMessage: TTabSheet
         Caption = 'Message'
-        ExplicitLeft = 0
-        ExplicitTop = 27
-        ExplicitHeight = 545
         object lblMessageHead: TLabel
           Left = 136
           Top = 12
@@ -55,6 +50,8 @@ object frmEndecrypt: TfrmEndecrypt
           Top = 40
           Width = 262
           Height = 359
+          Color = clBtnShadow
+          ParentBackground = False
           TabOrder = 0
           object lblInput: TLabel
             Left = 8
@@ -93,6 +90,8 @@ object frmEndecrypt: TfrmEndecrypt
           Top = 40
           Width = 262
           Height = 359
+          Color = clBtnShadow
+          ParentBackground = False
           TabOrder = 1
           object lblOutput: TLabel
             Left = 8
@@ -125,10 +124,12 @@ object frmEndecrypt: TfrmEndecrypt
           end
         end
         object pnlSub: TPanel
-          Left = 18
-          Top = 421
-          Width = 241
+          Left = 10
+          Top = 413
+          Width = 262
           Height = 92
+          Color = clBtnShadow
+          ParentBackground = False
           TabOrder = 2
           object lblHeadingSmall2: TLabel
             Left = 10
@@ -157,7 +158,7 @@ object frmEndecrypt: TfrmEndecrypt
             ParentFont = False
           end
           object btnDecrypt: TButton
-            Left = 120
+            Left = 150
             Top = 53
             Width = 75
             Height = 25
@@ -166,7 +167,7 @@ object frmEndecrypt: TfrmEndecrypt
             OnClick = btnDecryptClick
           end
           object btnEncrypt: TButton
-            Left = 34
+            Left = 28
             Top = 53
             Width = 75
             Height = 25
@@ -178,7 +179,6 @@ object frmEndecrypt: TfrmEndecrypt
       end
       object tabKey: TTabSheet
         Caption = 'Key'
-        ExplicitHeight = 458
         object lblKeyHEad: TLabel
           Left = 160
           Top = 39
@@ -287,7 +287,6 @@ object frmEndecrypt: TfrmEndecrypt
     BevelOuter = bvNone
     ParentColor = True
     TabOrder = 1
-    ExplicitTop = 496
     object bitClose: TBitBtn
       Left = 487
       Top = 1
