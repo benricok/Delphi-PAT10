@@ -70,7 +70,7 @@ begin
       sKey := edtKey.Text;
       sEncryptedMsg := Encrypt(memIn.Text, sKey);
       memOut.Text := sEncryptedMsg;
-      MessageDlg('Your new decrypt key is: ' + Algorithms.sNewKey, mtInformation, mbOKCancel, 0);
+      MessageDlg('Your key to decrypt the message is: ' + sKey, mtInformation, mbOKCancel, 0);
     end;
 end;
 

@@ -19,7 +19,7 @@ interface
 
   const
     // Characters for vigenere algorithm
-    sAvalibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    sAvalibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
 
     // Base64 algorithm lookup table
     base64_table : array [0..63] of char = (
@@ -123,7 +123,7 @@ end;
 // https://github.com/philipperemy/easy-encryption/blob/master/encrypt.h
 function Encrypt(sMessage, sKeyIn : string) : string;
 Var
-  sB64, sVigenereMsg : String;
+  {sB64,} sVigenereMsg : String;
 begin
   //sB64 := base64_encode(sMessage);
   sVigenereMsg := encrypt_Vigenere({sB64} sMessage, sKeyIn);
@@ -147,16 +147,16 @@ Var
   sEncryptedMsg : String;
 
 begin
-  i := 0;
-  k := 0;
+  i := 1;
+  k := 1;
 
   sNewKey := extend_key(sMsg, sKeyIn);
 
   sEncryptedMsg := '';
-  for k := 0 to (sMsg.length -1) do
+  for k := 1 to sMsg.length do
     sEncryptedMsg := sEncryptedMsg + 'x';
 
-  for i := 0 to sMsg.length do
+  for i := 1 to sMsg.length do
     begin
       if (upCase(sMsg[i]) IN ['A'..'Z', '0'..'9']) then
         sEncryptedMsg[i] := sAvalibleChars[((Pos(sMsg[i], sAvalibleChars) + Pos(sNewKey[i], sAvalibleChars)) MOD sAvalibleChars.Length)]
@@ -172,42 +172,42 @@ Var
   sDecryptedMsg : String;
 
 begin
-  i := 0;
-  k := 0;
+  i := 1;
+  k := 1;
 
   sDecryptedMsg := '';
-  for k := 0 to (sEncryptedMsg.length - 1) do
+  for k := 1 to sEncryptedMsg.length do
     sDecryptedMsg := sDecryptedMsg + 'x';
 
-  for i := 0 to sEncryptedMsg.length do
+  for i := 1 to sEncryptedMsg.length do
     begin
       if (upCase(sEncryptedMsg[i]) IN ['A'..'Z', '0'..'9']) then
-        sDecryptedMsg[i] := sAvalibleChars[(((Pos(sEncryptedMsg[i], sAvalibleChars)) - Pos(sNewKey[i], sAvalibleChars)) + sAvalibleChars.Length)]
+        sDecryptedMsg[i] := sAvalibleChars[(((Pos(sEncryptedMsg[i], sAvalibleChars) - Pos(sNewKey[i], sAvalibleChars)) + sAvalibleChars.Length) MOD sAvalibleChars.Length)]
       else
         sDecryptedMsg[i] := sEncryptedMsg[i];
     end;
   result := sDecryptedMsg;
 end;
 
-//Generate new key
+//Generate new private key
 function extend_key(sMsg, sKeyIn : String) : String;
 Var
   i, j, k : integer;
   sNewKeyGen : String;
 
 begin
-  i := 0;
-  j := 0;
-  k := 0;
+  i := 1;
+  j := 1;
+  k := 1;
 
   sNewKeyGen := '';
-  for k := 0 to (sMsg.length - 1) do
+  for k := 1 to sMsg.length do
     sNewKeyGen := sNewKeyGen + 'x';
 
-  for i := 0 to sMsg.length do
+  for i := 1 to sMsg.length do
     begin
       if j = sKeyIn.Length then
-        j := 0;
+         j := 1;
 
       sNewKeyGen[i] := sKeyIn[j];
       Inc(j);
@@ -250,6 +250,7 @@ begin
             sOut := sOut + base64_table[((iVal shl 8) shr (iValB + 8)) and $3F]
         end;
 
+    // Apply padding
     while length(sOut) mod 4 > 0 do
         begin
             sOut := sOut + '=';
@@ -261,8 +262,29 @@ end;
 function base64_decode(sIn : String) : String;
 Var
   sOut : String;
-begin
+  iVal, iValB, jj : integer;
+  c : char;
 
+begin
+  sOut := '';
+  iVal := 0;
+  iValB := -8;
+  {
+  for jj := 0 to length(sIn) do
+    begin
+      c := sIn[jj];
+      if c IN [] then
+        break;
+      iVal := (ival shl 6) + T[c];
+      iValB := iValB + 6;
+      if iValB >= 0 then
+        begin
+          sOut := sOut +  base64_table[char((iVal shr iValB) and $FF)];
+          iValB := iValB -8;
+        end;
+
+    end;
+   }
 end;
 
 end.

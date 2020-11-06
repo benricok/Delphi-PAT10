@@ -8,8 +8,8 @@ interface
   function  GenerateKey(iMin, iMax : integer; bUpChar, bLowChar, bNumbers, bSpecial : boolean) : String;
   function  Encrypt(sMessage, sKeyIn : string) : string;
   function  Decrypt(sEncryptedMsg, sKeyIn : string) : string;
-  function base64_encode(sIn : String) : String;
-  function base64_decode(sIn : String) : String;
+ {function base64_encode(sIn : String) : String;
+  function base64_decode(sIn : String) : String;}
   function encrypt_vigenere(sMsg, sKeyIn : String) : String;
   function decrypt_vigenere(sEncryptedMsg, sNewKey : String) : String;
   function extend_key(sMsg, sKeyIn : String) : String;
@@ -19,8 +19,9 @@ interface
 
   const
     // Characters for vigenere algorithm
-    sAvalibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    sAvalibleChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ';
 
+    {
     // Base64 algorithm lookup table
     base64_table : array [0..63] of char = (
         'A','B','C','D','E','F','G','H',
@@ -64,7 +65,7 @@ interface
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1, -1, -1, -1, -1, -1, -1, -1,
     -1, -1);
-
+    }
 
 implementation
 
@@ -147,22 +148,27 @@ Var
   sEncryptedMsg : String;
 
 begin
-  i := 0;
-  k := 0;
+  i := 1;
+  k := 1;
 
+  //Generate key with length = to message's length
   sNewKey := extend_key(sMsg, sKeyIn);
 
+  //fil string with placeholder characters
   sEncryptedMsg := '';
-  for k := 0 to (sMsg.length -1) do
+  for k := 1 to sMsg.length do
     sEncryptedMsg := sEncryptedMsg + 'x';
 
-  for i := 0 to sMsg.length do
+  //Encryption
+  for i := 1 to sMsg.length do
     begin
       if (upCase(sMsg[i]) IN ['A'..'Z', '0'..'9']) then
         sEncryptedMsg[i] := sAvalibleChars[((Pos(sMsg[i], sAvalibleChars) + Pos(sNewKey[i], sAvalibleChars)) MOD sAvalibleChars.Length)]
       else
         sEncryptedMsg[i] := sMsg[i];
     end;
+
+  //return Encrypted message
   result := sEncryptedMsg;
 end;
 
@@ -172,42 +178,46 @@ Var
   sDecryptedMsg : String;
 
 begin
-  i := 0;
-  k := 0;
+  i := 1;
+  k := 1;
 
+  //fil string with placeholder characters
   sDecryptedMsg := '';
-  for k := 0 to (sEncryptedMsg.length - 1) do
+  for k := 1 to sEncryptedMsg.length do
     sDecryptedMsg := sDecryptedMsg + 'x';
 
-  for i := 0 to sEncryptedMsg.length do
+  //Decryption
+  for i := 1 to sEncryptedMsg.length do
     begin
       if (upCase(sEncryptedMsg[i]) IN ['A'..'Z', '0'..'9']) then
-        sDecryptedMsg[i] := sAvalibleChars[(((Pos(sEncryptedMsg[i], sAvalibleChars)) - Pos(sNewKey[i], sAvalibleChars)) + sAvalibleChars.Length)]
+        sDecryptedMsg[i] := sAvalibleChars[(((Pos(sEncryptedMsg[i], sAvalibleChars) - Pos(sNewKey[i], sAvalibleChars)) + sAvalibleChars.Length) MOD sAvalibleChars.Length)]
       else
         sDecryptedMsg[i] := sEncryptedMsg[i];
     end;
+
+  //return Decrypted message
   result := sDecryptedMsg;
 end;
 
-//Generate new key
+//Generate new private key
 function extend_key(sMsg, sKeyIn : String) : String;
 Var
   i, j, k : integer;
   sNewKeyGen : String;
 
 begin
-  i := 0;
-  j := 0;
-  k := 0;
+  i := 1;
+  j := 1;
+  k := 1;
 
   sNewKeyGen := '';
-  for k := 0 to (sMsg.length - 1) do
+  for k := 1 to sMsg.length do
     sNewKeyGen := sNewKeyGen + 'x';
 
-  for i := 0 to sMsg.length do
+  for i := 1 to sMsg.length do
     begin
       if j = sKeyIn.Length then
-         j := 0;
+         j := 1;
 
       sNewKeyGen[i] := sKeyIn[j];
       Inc(j);
@@ -217,7 +227,7 @@ end;
 
 // https://github.com/philipperemy/easy-encryption
 
-
+{
 // https://github.com/philipperemy/easy-encryption/blob/master/b64.h
 function base64_encode(sIn : String) : String;
 Var
@@ -250,6 +260,7 @@ begin
             sOut := sOut + base64_table[((iVal shl 8) shr (iValB + 8)) and $3F]
         end;
 
+    // Apply padding
     while length(sOut) mod 4 > 0 do
         begin
             sOut := sOut + '=';
@@ -272,7 +283,7 @@ begin
   for jj := 0 to length(sIn) do
     begin
       c := sIn[jj];
-      if T[c] = -1 then
+      if c IN [] then
         break;
       iVal := (ival shl 6) + T[c];
       iValB := iValB + 6;
@@ -284,5 +295,6 @@ begin
 
     end;
 end;
+}
 
 end.
