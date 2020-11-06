@@ -1,6 +1,6 @@
 # Delphi PAT grade 10
 1. By Benrico Krog
-2. Writen in Delphi
+2. Uses the vigenere algorithm for encryption and decryption
 3. Topic: Encryption and Decryption.
 
 ## How to use the tool
