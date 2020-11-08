@@ -4,7 +4,7 @@
 3. Topic: Encryption and Decryption.
 
 ## How to use the tool
-1. Open the endecryptToool.exe application.
+1. Open the endecrypt.exe application.
 2. The Help button will show you this message.
 3. There are two modes to for processing the message. Encrypting and Decrypting.
 
